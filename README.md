@@ -60,7 +60,7 @@ This journey began as a collaborative hardware build using affordable PVC chassi
 
 ```bash
 # 1. Clone & Build
-git clone [https://github.com/gouuchou123-ma/diy-underwater-rov-simulation.git]
+git clone https://github.com/gouuchou123-ma/diy-underwater-rov-simulation.git
 cd diy-underwater-rov-simulation
 colcon build --symlink-install
 source install/setup.bash
