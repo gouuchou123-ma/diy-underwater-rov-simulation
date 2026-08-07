@@ -1,0 +1,443 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- This URDF was automatically created by SolidWorks to URDF Exporter! Originally created by Stephen Brawner (brawner@gmail.com) 
+     Commit Version: 1.6.0-4-g7f85cfe  Build Version: 1.6.7995.38578
+     For more information, please see http://wiki.ros.org/sw_urdf_exporter -->
+<robot
+  name="asem3">
+  <link
+    name="base_link">
+    <inertial>
+      <origin
+        xyz="0.151021911856099 -0.267349648143636 0.0568461252002224"
+        rpy="0 0 0" />
+      <mass
+        value="25.0" />
+      <inertia
+        ixx="3.43651850668957"
+        ixy="0.000841862462702603"
+        ixz="0.0485870262551349"
+        iyy="5.59261634892912"
+        iyz="0.00447468996355648"
+        izz="2.52105120744765" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://asem3/meshes/base_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <geometry>
+        <box size="0.5 0.5 0.3"/> 
+      </geometry>
+      <origin xyz="0 0 0" rpy="0 0 0"/> 
+    </collision>
+  </link>
+
+  <!-- CÁI BÓNG KHÔNG GIAN (World sẽ kết nối vào đây) -->
+  <link name="base_footprint"/>
+  
+  <!-- LẬT NGƯỢC XÁC PHÀM 180 ĐỘ (Pi = 3.14159) SO VỚI CÁI BÓNG -->
+  <joint name="base_joint" type="fixed">
+    <parent link="base_footprint"/>
+    <child link="base_link"/>
+    <origin xyz="0 0 0" rpy="3.14159 0 0"/> 
+  </joint>
+
+  <link
+    name="thruster_1">
+    <inertial>
+      <origin
+        xyz="-4.08796010101242E-06 -5.9539562187183E-06 0.0594890942286845"
+        rpy="0 0 0" />
+      <mass
+        value="0.00832538659987023" />
+      <inertia
+        ixx="2.33413179217244E-06"
+        ixy="-1.23029658550415E-09"
+        ixz="6.80181629756342E-11"
+        iyy="2.33209533886204E-06"
+        iyz="2.2225928152006E-10"
+        izz="3.43958510702588E-06" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://asem3/meshes/thruster_1.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://asem3/meshes/thruster_1.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="joint_thruster_1"
+    type="continuous">
+    <origin
+      xyz="0.304515435866449 -0.101230381557927 -0.218217951413524"
+      rpy="-3.06274305890956 -1.33423749682316 0" />
+    <parent
+      link="base_link" />
+    <child
+      link="thruster_1" />
+    <axis
+      xyz="0 0 -1" />
+    <limit 
+      effort="1000.0" velocity="200.0"/>
+  </joint>
+  <link
+    name="thruster_2">
+    <inertial>
+      <origin
+        xyz="-4.32671098155035E-06 -6.01912260420057E-06 0.0594890549652228"
+        rpy="0 0 0" />
+      <mass
+        value="0.00832480844765888" />
+      <inertia
+        ixx="2.33401067606039E-06"
+        ixy="-1.20361933643176E-09"
+        ixz="9.2098924605002E-11"
+        iyy="2.33190423026841E-06"
+        iyz="2.71991373028105E-10"
+        izz="3.43926017546242E-06" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://asem3/meshes/thruster_2.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://asem3/meshes/thruster_2.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="joint_thruster_2"
+    type="continuous">
+    <origin
+      xyz="-0.164876931445938 -0.100406239791588 -0.169636974739357"
+      rpy="3.136860696155 -0.817468176060154 0" />
+    <parent
+      link="base_link" />
+    <child
+      link="thruster_2" />
+    <axis
+      xyz="0 0 -1" />
+    <limit 
+      effort="1000.0" velocity="200.0"/>
+  </joint>
+  <link
+    name="thruster_3">
+    <inertial>
+      <origin
+        xyz="-3.8042552357731E-06 -7.14442782556723E-06 0.0594893323689196"
+        rpy="0 0 0" />
+      <mass
+        value="0.00832440239990118" />
+      <inertia
+        ixx="2.33382465142188E-06"
+        ixy="-1.06458051571081E-09"
+        ixz="-5.44796873193253E-11"
+        iyy="2.33170562608364E-06"
+        iyz="1.61330792474648E-10"
+        izz="3.43909531680898E-06" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://asem3/meshes/thruster_3.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://asem3/meshes/thruster_3.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="joint_thruster_3"
+    type="continuous">
+    <origin
+      xyz="0.28974145796452 -0.0933531257092531 0.294182947242118"
+      rpy="-0.0068238156898724 0.706125892271495 0" />
+    <parent
+      link="base_link" />
+    <child
+      link="thruster_3" />
+    <axis
+      xyz="0 0 -1" />
+    <limit 
+      effort="1000.0" velocity="200.0"/>
+  </joint>
+  <link
+    name="thruster_5">
+    <inertial>
+      <origin
+        xyz="-3.48566091915026E-06 -6.10754169554084E-06 0.0594895015185237"
+        rpy="0 0 0" />
+      <mass
+        value="0.00832514789587679" />
+      <inertia
+        ixx="2.3340011760948E-06"
+        ixy="-1.23983357921249E-09"
+        ixz="3.54055309702535E-11"
+        iyy="2.33217979767667E-06"
+        iyz="2.44514207044107E-10"
+        izz="3.43953012935876E-06" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://asem3/meshes/thruster_5.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://asem3/meshes/thruster_5.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="joint_thruster_5"
+    type="continuous">
+    <origin
+      xyz="0.159890691178731 -0.229348198029233 -0.0922135343675367"
+      rpy="1.5707963267949 -0.0724813199144527 -3.14159265358573" />
+    <parent
+      link="base_link" />
+    <child
+      link="thruster_5" />
+    <axis
+      xyz="0 0 -1" />
+    <limit 
+      effort="1000.0" velocity="200.0"/>
+  </joint>
+  <link
+    name="thruster_6">
+    <inertial>
+      <origin
+        xyz="-3.91374950037271E-06 -5.8866987998063E-06 0.0594890782220462"
+        rpy="0 0 0" />
+      <mass
+        value="0.00832558774930157" />
+      <inertia
+        ixx="2.33412817941386E-06"
+        ixy="-1.16508728549737E-09"
+        ixz="7.01056051022647E-11"
+        iyy="2.3321501198231E-06"
+        iyz="2.28280772902096E-10"
+        izz="3.43962024439909E-06" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://asem3/meshes/thruster_6.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://asem3/meshes/thruster_6.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="joint_thruster_6"
+    type="continuous">
+    <origin
+      xyz="0.155808121961066 -0.232374161137597 0.234279875056063"
+      rpy="-1.5968516760817 -0.0191586391613463 0.00049926744663442" />
+    <parent
+      link="base_link" />
+    <child
+      link="thruster_6" />
+    <axis
+      xyz="0 0 -1" />
+    <limit 
+      effort="1000.0" velocity="200.0"/>
+  </joint>
+  <link
+    name="thruster_7">
+    <inertial>
+      <origin
+        xyz="-3.60581665187487E-06 -5.96630727811576E-06 0.0594886003793693"
+        rpy="0 0 0" />
+      <mass
+        value="0.00832445364110315" />
+      <inertia
+        ixx="2.33399934716475E-06"
+        ixy="-1.29554150605658E-09"
+        ixz="5.79758698162557E-11"
+        iyy="2.33182389083401E-06"
+        iyz="2.53484705255019E-10"
+        izz="3.43921772509184E-06" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://asem3/meshes/thruster_7.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://asem3/meshes/thruster_7.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="joint_thruster_7"
+    type="continuous">
+    <origin
+      xyz="-0.167157175068059 -0.0950833192319798 0.287082805498855"
+      rpy="-0.00682381568987209 0.715441217233064 0" />
+    <parent
+      link="base_link" />
+    <child
+      link="thruster_7" />
+    <axis
+      xyz="0 0 -1" />
+    <limit 
+      effort="1000.0" velocity="200.0"/>
+  </joint>
+
+  <!-- ========================================== -->
+  <!-- 1. TẠO THỂ XÁC VẬT LÝ CHO IMU (Frame_id)   -->
+  <!-- ========================================== -->
+  <link name="imu_link">
+    <visual>
+      <geometry>
+        <box size="0.01 0.01 0.01"/>
+      </geometry>
+      <material name="red">
+        <color rgba="1 0 0 1"/>
+      </material>
+    </visual>
+  </link>
+
+  <joint name="imu_joint" type="fixed">
+    <parent link="base_link"/>
+    <child link="imu_link"/>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+  </joint>
+
+  <!-- ========================================== -->
+  <!-- 2. KHAI BÁO DRIVER WEBOTS-ROS2             -->
+  <!-- ========================================== -->
+  <webots>
+    <!-- Plugin Động cơ -->
+    <plugin type="motor_plugin.MotorPlugin" />
+
+    <!-- Cảm biến Độ sâu (GPS) -->
+    <device reference="base_link" type="GPS">
+      <ros>
+        <enabled>true</enabled>
+        <alwaysOn>true</alwaysOn>
+        <updateRate>10</updateRate> 
+        <topicName>/sensor/depth</topicName>
+      </ros>
+    </device>
+
+    <!-- Khai báo Motor -->
+    <motor reference="joint_thruster_1" maxVelocity="500.0"/>
+    <motor reference="joint_thruster_2" maxVelocity="500.0"/>
+    <motor reference="joint_thruster_3" maxVelocity="500.0"/>
+    <motor reference="joint_thruster_5" maxVelocity="500.0"/>
+    <motor reference="joint_thruster_6" maxVelocity="500.0"/>
+    <motor reference="joint_thruster_7" maxVelocity="500.0"/>
+
+    <!-- PLUGIN GỘP IMU (Chuẩn hóa cho Foxglove) -->
+    <plugin type="webots_ros2_driver::Ros2IMU">
+        <enabled>true</enabled>
+        <topicName>/imu</topicName>
+        <alwaysOn>true</alwaysOn>
+        <!-- Bắt buộc phải trỏ về cái Thể xác vật lý vừa tạo ở trên -->
+        <frameName>imu_link</frameName>
+        <!-- Trỏ đúng tên node InertialUnit và Gyro trong Webots -->
+        <inertialUnitName>imu</inertialUnitName>
+        <gyroName>gyro</gyroName>
+    </plugin>
+  </webots>
+</robot>

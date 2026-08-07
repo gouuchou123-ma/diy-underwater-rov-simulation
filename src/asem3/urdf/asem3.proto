@@ -1,0 +1,304 @@
+#VRML_SIM R2025a utf8
+# license: Apache License 2.0
+# license url: http://www.apache.org/licenses/LICENSE-2.0
+# This is a proto file for Webots for the asem3
+# Extracted from: /home/nhu/Downloads/ROV_V2_Webots/asem3/urdf/asem3.urdf
+
+PROTO asem3 [
+  field  SFVec3f     translation     0 0 0
+  field  SFRotation  rotation        0 0 1 0
+  field  SFString    name            "asem3"  # Is `Robot.name`.
+  field  SFString    controller      "void"   # Is `Robot.controller`.
+  field  MFString    controllerArgs  []       # Is `Robot.controllerArgs`.
+  field  SFString    customData      ""       # Is `Robot.customData`.
+  field  SFBool      supervisor      FALSE    # Is `Robot.supervisor`.
+  field  SFBool      synchronization TRUE     # Is `Robot.synchronization`.
+  field  SFBool      selfCollision   FALSE    # Is `Robot.selfCollision`.
+]
+{
+  Robot {
+    translation IS translation
+    rotation IS rotation
+    controller IS controller
+    controllerArgs IS controllerArgs
+    customData IS customData
+    supervisor IS supervisor
+    synchronization IS synchronization
+    selfCollision IS selfCollision
+    children [
+      Shape {
+        appearance DEF base_link_material PBRAppearance {
+          baseColor 0.792157 0.819608 0.933333
+          roughness 1.000000
+          metalness 0
+        }
+        geometry DEF base_link Mesh {
+          url "/home/nhu/Downloads/ROV_V2_Webots/asem3/meshes/base_link.STL"
+        }
+      }
+      HingeJoint {
+        jointParameters HingeJointParameters {
+          axis -0.969130 -0.078768 0.233631
+          anchor 0.304515 -0.101230 -0.218218
+        }
+        device [
+          RotationalMotor {
+            name "joint_thruster_1"
+            maxTorque 10000
+          }
+          PositionSensor {
+            name "joint_thruster_1_sensor"
+          }
+        ]
+        endPoint Solid {
+          translation 0.304515 -0.101230 -0.218218
+          rotation -0.785374 -0.024398 -0.618541 3.079654
+          children [
+            Shape {
+              appearance DEF thruster_1_material PBRAppearance {
+                baseColor 0.792157 0.819608 0.933333
+                roughness 1.000000
+                metalness 0
+              }
+              geometry DEF thruster_1 Mesh {
+                url "/home/nhu/Downloads/ROV_V2_Webots/asem3/meshes/thruster_1.STL"
+              }
+            }
+          ]
+          name "thruster_1"
+          boundingObject USE thruster_1
+          physics Physics {
+            density -1
+            mass 0.008325
+            centerOfMass [ -0.000004 -0.000006 0.059489 ]
+            inertiaMatrix [
+              2.334132e-06 2.332095e-06 3.439585e-06
+              -1.230297e-09 6.801816e-11 2.222593e-10
+            ]
+          }
+        }
+      }
+      HingeJoint {
+        jointParameters HingeJointParameters {
+          axis -0.729408 0.004732 0.684062
+          anchor -0.164877 -0.100406 -0.169637
+        }
+        device [
+          RotationalMotor {
+            name "joint_thruster_1"
+            maxTorque 10000
+          }
+          PositionSensor {
+            name "joint_thruster_1_sensor"
+          }
+        ]
+        endPoint Solid {
+          translation -0.164877 -0.100406 -0.169637
+          rotation 0.917624 -0.000940 0.397448 3.137250
+          children [
+            Shape {
+              appearance DEF thruster_2_material PBRAppearance {
+                baseColor 0.792157 0.819608 0.933333
+                roughness 1.000000
+                metalness 0
+              }
+              geometry DEF thruster_2 Mesh {
+                url "/home/nhu/Downloads/ROV_V2_Webots/asem3/meshes/thruster_2.STL"
+              }
+            }
+          ]
+          name "thruster_2"
+          boundingObject USE thruster_2
+          physics Physics {
+            density -1
+            mass 0.008325
+            centerOfMass [ -0.000004 -0.000006 0.059489 ]
+            inertiaMatrix [
+              2.334011e-06 2.331904e-06 3.439260e-06
+              -1.203619e-09 9.209892e-11 2.719914e-10
+            ]
+          }
+        }
+      }
+      HingeJoint {
+        jointParameters HingeJointParameters {
+          axis -0.648876 -0.006824 -0.760864
+          anchor 0.289741 -0.093353 0.294183
+        }
+        device [
+          RotationalMotor {
+            name "joint_thruster_3"
+            maxTorque 10000
+          }
+          PositionSensor {
+            name "joint_thruster_3_sensor"
+          }
+        ]
+        endPoint Solid {
+          translation 0.289741 -0.093353 0.294183
+          rotation -0.009258 0.999951 0.003412 0.706157
+          children [
+            Shape {
+              appearance DEF thruster_3_material PBRAppearance {
+                baseColor 0.792157 0.819608 0.933333
+                roughness 1.000000
+                metalness 0
+              }
+              geometry DEF thruster_3 Mesh {
+                url "/home/nhu/Downloads/ROV_V2_Webots/asem3/meshes/thruster_3.STL"
+              }
+            }
+          ]
+          name "thruster_3"
+          boundingObject USE thruster_3
+          physics Physics {
+            density -1
+            mass 0.008324
+            centerOfMass [ -0.000004 -0.000007 0.059489 ]
+            inertiaMatrix [
+              2.333825e-06 2.331706e-06 3.439095e-06
+              -1.064581e-09 -5.447969e-11 1.613308e-10
+            ]
+          }
+        }
+      }
+      HingeJoint {
+        jointParameters HingeJointParameters {
+          axis 0.000000 -1.000000 0.000000
+          anchor 0.159891 -0.229348 -0.092214
+        }
+        device [
+          RotationalMotor {
+            name "joint_thruster_5"
+            maxTorque 10000
+          }
+          PositionSensor {
+            name "joint_thruster_5_sensor"
+          }
+        ]
+        endPoint Solid {
+          translation 0.159891 -0.229348 -0.092214
+          rotation -0.025629 -0.706875 -0.706875 3.090346
+          children [
+            Shape {
+              appearance DEF thruster_5_material PBRAppearance {
+                baseColor 0.792157 0.819608 0.933333
+                roughness 1.000000
+                metalness 0
+              }
+              geometry DEF thruster_5 Mesh {
+                url "/home/nhu/Downloads/ROV_V2_Webots/asem3/meshes/thruster_5.STL"
+              }
+            }
+          ]
+          name "thruster_5"
+          boundingObject USE thruster_5
+          physics Physics {
+            density -1
+            mass 0.008325
+            centerOfMass [ -0.000003 -0.000006 0.059490 ]
+            inertiaMatrix [
+              2.334001e-06 2.332180e-06 3.439530e-06
+              -1.239834e-09 3.540553e-11 2.445142e-10
+            ]
+          }
+        }
+      }
+      HingeJoint {
+        jointParameters HingeJointParameters {
+          axis 0.000000 -0.999661 0.026048
+          anchor 0.155808 -0.232374 0.234280
+        }
+        device [
+          RotationalMotor {
+            name "joint_thruster_6"
+            maxTorque 10000
+          }
+          PositionSensor {
+            name "joint_thruster_6_sensor"
+          }
+        ]
+        endPoint Solid {
+          translation 0.155808 -0.232374 0.234280
+          rotation -0.999911 -0.009582 -0.009336 1.596936
+          children [
+            Shape {
+              appearance DEF thruster_6_material PBRAppearance {
+                baseColor 0.792157 0.819608 0.933333
+                roughness 1.000000
+                metalness 0
+              }
+              geometry DEF thruster_6 Mesh {
+                url "/home/nhu/Downloads/ROV_V2_Webots/asem3/meshes/thruster_6.STL"
+              }
+            }
+          ]
+          name "thruster_6"
+          boundingObject USE thruster_6
+          physics Physics {
+            density -1
+            mass 0.008326
+            centerOfMass [ -0.000004 -0.000006 0.059489 ]
+            inertiaMatrix [
+              2.334128e-06 2.332150e-06 3.439620e-06
+              -1.165087e-09 7.010561e-11 2.282808e-10
+            ]
+          }
+        }
+      }
+      HingeJoint {
+        jointParameters HingeJointParameters {
+          axis -0.655935 -0.006824 -0.754786
+          anchor -0.167157 -0.095083 0.287083
+        }
+        device [
+          RotationalMotor {
+            name "joint_thruster_7"
+            maxTorque 10000
+          }
+          PositionSensor {
+            name "joint_thruster_7_sensor"
+          }
+        ]
+        endPoint Solid {
+          translation -0.167157 -0.095083 0.287083
+          rotation -0.009127 0.999953 0.003412 0.715472
+          children [
+            Shape {
+              appearance DEF thruster_7_material PBRAppearance {
+                baseColor 0.792157 0.819608 0.933333
+                roughness 1.000000
+                metalness 0
+              }
+              geometry DEF thruster_7 Mesh {
+                url "/home/nhu/Downloads/ROV_V2_Webots/asem3/meshes/thruster_7.STL"
+              }
+            }
+          ]
+          name "thruster_7"
+          boundingObject USE thruster_7
+          physics Physics {
+            density -1
+            mass 0.008324
+            centerOfMass [ -0.000004 -0.000006 0.059489 ]
+            inertiaMatrix [
+              2.333999e-06 2.331824e-06 3.439218e-06
+              -1.295542e-09 5.797587e-11 2.534847e-10
+            ]
+          }
+        }
+      }
+    ]
+    name IS name
+    boundingObject USE base_link
+    physics Physics {
+      density -1
+      mass 73.566471
+      centerOfMass [ 0.151022 -0.267350 0.056846 ]
+      inertiaMatrix [
+        3.436519e+00 5.592616e+00 2.521051e+00
+        8.418625e-04 4.858703e-02 4.474690e-03
+      ]
+    }
+  }
+}

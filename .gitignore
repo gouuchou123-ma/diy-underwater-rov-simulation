@@ -1,0 +1,13 @@
+# Tránh đẩy file rác của ROS 2 lên mạng
+build/
+install/
+log/
+
+# Tránh đẩy các file video nặng
+*.mp4
+*.mkv
+
+# Các file tạm của Linux/Python
+__pycache__/
+*.pyc
+.vscode/
