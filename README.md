@@ -33,6 +33,7 @@ This journey began as a collaborative hardware build using affordable PVC chassi
 
 ### Root Cause Analysis (RCA) - Why V1 Failed to Dive
 ![Pool_Test](docs/images/v1_pool_fail.gif)
+
 *V1 Pool Test: The system struggled to submerge due to overwhelming positive buoyancy.*
 
 1. **The Buoyancy Trap:** The massive internal volume of the V1 acrylic enclosure created positive buoyancy that far exceeded our calculations.
