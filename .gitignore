@@ -1,13 +1,11 @@
-# Tránh đẩy file rác của ROS 2 lên mạng
 build/
 install/
 log/
-
-# Tránh đẩy các file video nặng
-*.mp4
-*.mkv
-
-# Các file tạm của Linux/Python
 __pycache__/
-*.pyc
+*.py[cod]
+*.log
 .vscode/
+src/asem3/meshes/cave_rocks/
+src/asem3/meshes/coral_block_lighthouse/
+src/asem3/meshes/kalamos_cave/
+src/asem3/meshes/underwater_coral_reef_photogrametry_3d_scan/

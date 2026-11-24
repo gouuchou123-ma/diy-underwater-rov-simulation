@@ -1,1 +1,1 @@
-controller_joint_names: ['', 'joint_thruster_1', 'joint_thruster_1', 'joint_thruster_3', 'joint_thruster_5', 'joint_thruster_6', 'joint_thruster_7', ]
+controller_joint_names: ['', 'joint_thruster_1', 'joint_thruster_2', 'joint_thruster_3', 'joint_thruster_5', 'joint_thruster_6', 'joint_thruster_7', ]

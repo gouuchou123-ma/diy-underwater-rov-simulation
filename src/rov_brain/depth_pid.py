@@ -4,68 +4,89 @@ from rclpy.node import Node
 from geometry_msgs.msg import PointStamped
 from std_msgs.msg import Float64
 
+
 class AutoDepthPID(Node):
     def __init__(self):
         super().__init__('auto_depth_pid')
-        self.get_logger().info("[PID] Hệ thống Lái tự động Đã Khởi Động!")
+        self.get_logger().info('[PID] Anti-oscillation depth controller initialized.')
 
-        # 1. KÊNH LẮNG NGHE (Đã cập nhật để nghe sóng âm dưới đáy biển)
+        # 1. Subscribers
         self.create_subscription(PointStamped, '/sensor/depth', self.depth_callback, 10)
-        self.create_subscription(Float64, '/subsea/pid/target_depth', self.target_callback, 10)        
-        
-        # 2. KÊNH PHÁT LỆNH (Trực tiếp xuống Webots, loại bỏ namespace /shore/ rác)
+        self.create_subscription(Float64, '/subsea/pid/target_depth', self.target_callback, 10)
+        self.create_subscription(Float64, '/rov/height_correction', self.correction_callback, 10)
+
+        # 2. Publishers
         self.pub_t5 = self.create_publisher(Float64, '/joint_thruster_5/cmd_vel', 10)
         self.pub_t6 = self.create_publisher(Float64, '/joint_thruster_6/cmd_vel', 10)
+        self.pub_effective_target = self.create_publisher(
+            Float64, '/subsea/pid/effective_target_depth', 10
+        )
 
-        # 3. THÔNG SỐ PID (Có thể tinh chỉnh sau)
-        self.Kp = 15.0  # Lực kéo lò xo (Mạnh/Yếu)
-        self.Ki = 0.5   # Bù trừ lực nổi (Tích lũy)
-        self.Kd = 5.0  # Phanh giảm xóc (Chống lố)
+        # 3. Tuned PID gains (reduced Kd to eliminate phase-lag oscillation)
+        self.Kp = 2.0
+        self.Ki = 0.05
+        self.Kd = 4.0
 
-        # 4. BỘ NHỚ PID
-        self.target_depth = -2.0  # Mục tiêu mặc định: Neo tàu ở độ sâu 2 mét
+        # 4. Controller state variables
+        self.target_depth = -2.0
+        self.height_correction = 0.0
+        self.smooth_dh = 0.0
         self.current_depth = 0.0
+        self.prev_depth = 0.0
+        self.has_depth = False  # Prevents derivative kick on initial sample
+        self.smooth_d = 0.0     # Low-pass filtered derivative term
         self.integral_error = 0.0
-        self.previous_error = 0.0
+        self.dt = 0.05
 
-        # Vòng lặp PID chạy liên tục 20 lần/giây (0.05s)
-        self.timer = self.create_timer(0.05, self.pid_compute)
-
+        # 20 Hz closed-loop timer
+        self.timer = self.create_timer(self.dt, self.pid_compute)
 
     def depth_callback(self, msg):
-        # Trục Z của GPS Webots thường âm khi chìm xuống nước
-        self.current_depth = msg.point.z 
+        if not self.has_depth:
+            self.prev_depth = msg.point.z
+            self.has_depth = True
+        self.current_depth = msg.point.z
 
     def target_callback(self, msg):
         self.target_depth = msg.data
-        self.get_logger().info(f"[PID] Đã nhận lệnh thay đổi độ sâu mục tiêu: {self.target_depth} mét")
+
+    def correction_callback(self, msg):
+        dh = max(-3.0, min(3.0, msg.data))
+        self.height_correction = dh
 
     def pid_compute(self):
-        # Bước 1: Tính toán sai số (Error)
-        error = self.target_depth - self.current_depth
+        if not self.has_depth:
+            return
 
-        # Bước 2: Tích phân (Integral) - Cộng dồn sai số theo thời gian
-        self.integral_error += error * 0.05
-        
-        # Chống tràn bộ nhớ Integral (Windup Guard)
-        if self.integral_error > 50.0: self.integral_error = 50.0
-        if self.integral_error < -50.0: self.integral_error = -50.0
+        # Step 0: Apply EMA low-pass filter to height correction (alpha = 0.08)
+        self.smooth_dh = 0.92 * self.smooth_dh + 0.08 * self.height_correction
+        effective_target = self.target_depth + self.smooth_dh
+        self.pub_effective_target.publish(Float64(data=effective_target))
 
-        # Bước 3: Đạo hàm (Derivative) - Tính tốc độ thay đổi của sai số
-        derivative = (error - self.previous_error) / 0.05
-        self.previous_error = error
+        # Step 1: Compute depth error
+        error = effective_target - self.current_depth
 
-        # Bước 4: TỔNG HỢP LỰC PID
-        # Output = (P) + (I) + (D)
-        control_output = (self.Kp * error) + (self.Ki * self.integral_error) + (self.Kd * derivative)
+        # Step 2: Integral term with anti-windup clamp
+        self.integral_error += error * self.dt
+        self.integral_error = max(-5.0, min(5.0, self.integral_error))
 
-        # Giới hạn lực động cơ tối đa (Bảo vệ motor)
-        if control_output > 100.0: control_output = 100.0
-        if control_output < -100.0: control_output = -100.0
+        # Step 3: Filtered Derivative-on-Measurement
+        raw_d = -(self.current_depth - self.prev_depth) / self.dt
+        self.prev_depth = self.current_depth
+        self.smooth_d = 0.7 * self.smooth_d + 0.3 * raw_d
 
-        # Bước 5: Bơm ga cho 2 động cơ lặn nổi
+        # Step 4: Compute clamped PID output
+        control_output = (
+            (self.Kp * error)
+            + (self.Ki * self.integral_error)
+            + (self.Kd * self.smooth_d)
+        )
+        control_output = max(-35.0, min(35.0, control_output))
+
+        # Step 5: Publish vertical thruster commands
         self.pub_t5.publish(Float64(data=control_output))
         self.pub_t6.publish(Float64(data=control_output))
+
 
 def main(args=None):
     rclpy.init(args=args)
@@ -76,7 +97,9 @@ def main(args=None):
         pass
     finally:
         node.destroy_node()
-        rclpy.shutdown()
+        if rclpy.ok():
+            rclpy.shutdown()
+
 
 if __name__ == '__main__':
     main()

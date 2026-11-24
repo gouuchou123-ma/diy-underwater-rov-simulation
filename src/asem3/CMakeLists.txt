@@ -1,13 +1,14 @@
-cmake_minimum_required(VERSION 3.8)
+cmake_minimum_required(VERSION 2.8.3)
+
 project(asem3)
 
-# Tìm kiếm lõi build của ROS 2
-find_package(ament_cmake REQUIRED)
+find_package(catkin REQUIRED)
 
-# Lệnh sinh tử: Yêu cầu ROS 2 copy thư mục meshes và urdf vào nhân hệ thống
-install(
-  DIRECTORY meshes urdf
-  DESTINATION share/${PROJECT_NAME}
-)
+catkin_package()
 
-ament_package()
+find_package(roslaunch)
+
+foreach(dir config launch meshes urdf)
+	install(DIRECTORY ${dir}/
+		DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/${dir})
+endforeach(dir)
