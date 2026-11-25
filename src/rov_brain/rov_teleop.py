@@ -50,9 +50,9 @@ class RovTeleop(Node):
 
             # 2. Thruster Allocation Matrix (TAM)
             self.t7 = surge + sway + yaw  # Front-Left thruster
-            self.t3 = surge - sway - yaw  # Rear-Left thruster
+            self.t3 = surge - sway + yaw  # Rear-Left thruster
             self.t2 = surge - sway - yaw  # Front-Right thruster
-            self.t1 = surge + sway + yaw  # Rear-Right thruster
+            self.t1 = surge + sway - yaw  # Rear-Right thruster
 
             # 3. Target depth control (Shoulder buttons: RB=5, LB=4)
             if msg.buttons[5] == 1:    # RB: Ascend

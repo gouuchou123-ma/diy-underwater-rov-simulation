@@ -131,24 +131,33 @@ class MotorPlugin:
             heave_vel = (vel_5 + vel_6) / 2.0
             self.robot_node.addForce([0.0, 0.0, heave_vel * 3.5], True)
 
-            # 2. 45-degree vectored horizontal thrusters
+             # 2. Decoupled 45-degree vectored thrust (Surge, Sway, pure Yaw via angular velocity)
             thrust_factor = 4.0
             t7 = self.current_velocities.get('joint_thruster_7', 0.0) * thrust_factor
             t3 = self.current_velocities.get('joint_thruster_3', 0.0) * thrust_factor
             t2 = self.current_velocities.get('joint_thruster_2', 0.0) * thrust_factor
             t1 = self.current_velocities.get('joint_thruster_1', 0.0) * thrust_factor
 
-            A = 0.7071
-            self.robot_node.addForceWithOffset([t7 * A, -t7 * A, 0], [-0.301, 0.220, 0.027], True)
-            self.robot_node.addForceWithOffset([t3 * A, t3 * A, 0], [0.156, 0.227, 0.029], True)
-            self.robot_node.addForceWithOffset([t2 * A, t2 * A, 0], [-0.299, -0.237, 0.022], True)
-            self.robot_node.addForceWithOffset([t1 * A, -t1 * A, 0], [0.171, -0.285, 0.021], True)
+             # Workaround for Webots R2025a Python bug (#6881: addTorque calls addForce)
+             # Integrate pure yaw torque into world Z angular velocity (vel[5])
+            yaw_torque = (t7 + t3 - t2 - t1) * 0.0015
+            if abs(yaw_torque) > 1e-4:
+                 dt = self.timestep / 1000.0
+                 vel = list(self.robot_node.getVelocity())
+                 vel[5] = max(-1.5, min(1.5, vel[5] + (yaw_torque / 0.25) * dt))
+                 self.robot_node.setVelocity(vel)
 
-            # Hydrodynamic pitch torque around Y-axis during surge/heave maneuvers
+            A = 0.7071
+            surge_force = (t7 + t3 + t2 + t1) * A
+            sway_force = (t7 - t3 - t2 + t1) * A
+            self.robot_node.addForce([surge_force, sway_force, 0.0], True)
+
+            # Apply hydrodynamic pitch torque in local frame 
             surge_net = (t7 + t3 + t2 + t1) / 4.0
             heave_diff = vel_5 - vel_6
             pitch_torque = (surge_net * 0.008) + (heave_diff * 0.12)
             self.robot_node.addTorque([0.0, pitch_torque, 0.0], True)
+            self.robot_node.addTorque([0.0, 0.0, yaw_torque], False)
 
             # 3. Poseidon environmental disturbance model (tidal current + turbulence)
             if getattr(self, 'is_poseidon_on', False):
